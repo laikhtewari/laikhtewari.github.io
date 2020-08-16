@@ -1,4 +1,5 @@
-const redirect_uri = 'http://localhost/spotify/'
+// const redirect_uri = 'http://localhost/spotify/'
+const redirect_uri = 'https://laikhtewari.com/spotify/'
 
 // PKCE Functions
 function gen_code_verifier(length) {
