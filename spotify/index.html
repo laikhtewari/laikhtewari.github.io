@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Stats for Spotify</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src='https://bitwiseshiftleft.github.io/sjcl/sjcl.js'></script>
+	<script src='script.js'></script>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body onload='onload_housekeeping()'>
+<h1 id='title'>Learn about your music habits</h1>
+
+<div id='login' onclick="authenticate()">
+	<img id='logo' src="Spotify_Icon_RGB_White.png">
+	<span id='login-text'>Login with Spotify</span>
+</div>
+
+<div id="options">
+	<button onclick="top_artists()">Top Played Artists</button>
+	<button onclick="top_tracks()">Top Played Tracks</button>
+<!-- 	<button onclick="average_metrics()">Average metrics</button>
+	<button onclick="recommendations()">Song Recommendations</button> -->
+</div>
+
+<table id='data_table'></table>
+</body>
+</html>
