@@ -155,6 +155,7 @@ function top_artists() {
 			return function() { window.open(uri) }
 		}
 
+		let table_body = document.createElement('tbody')
 		for (let i = 0; i < items.length; i++) {
 			let row = document.createElement('tr')
 
@@ -178,8 +179,10 @@ function top_artists() {
 
 			row.style.cursor = 'pointer'
 
-			table.appendChild(row)
+			table_body.appendChild(row)
 		}
+
+		table.appendChild(table_body)
 	})
 }
 
@@ -218,6 +221,7 @@ function top_tracks() {
 			return function() { window.open(uri) }
 		}
 
+		let table_body = document.createElement('tbody')
 		for (let i = 0; i < items.length; i++) {
 			let row = document.createElement('tr')
 
@@ -237,8 +241,10 @@ function top_tracks() {
 
 			row.style.cursor = 'pointer'
 
-			table.appendChild(row)
+			table_body.appendChild(row)
 		}
+
+		table.appendChild(table_body)
 	})
 }
 

@@ -68,6 +68,10 @@ table {
 	margin: auto;
 }
 
+tbody tr:hover {
+    background-color: #1AA149;
+}
+
 td, th {
 	padding: 5px;
 	border: white solid;
