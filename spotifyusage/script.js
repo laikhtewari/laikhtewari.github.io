@@ -122,6 +122,7 @@ function exchange_code_for_token(code, code_verifier) {
 }
 
 function refresh_token() {
+	console.log('Refreshing...')
 	let formBody = new URLSearchParams({
 		"client_id" : 'e58046da881d41baa038e46fdf037854',
 		"grant_type" : 'refresh_token',
@@ -163,8 +164,10 @@ function clear() {
 function top_artists() {
 	clear()
 	base_url = 'https://api.spotify.com/v1/me/top/artists?'
-	params = new URLSearchParams()
-	params.append('limit', 100)
+	params = new URLSearchParams({
+		'limit' : 100,
+		'time_range' : 'long_term'
+	})
 
 	fetch(base_url + params.toString(), {
 		headers : {
@@ -232,8 +235,10 @@ function top_artists() {
 function top_tracks() {
 	clear()
 	base_url = 'https://api.spotify.com/v1/me/top/tracks?'
-	params = new URLSearchParams()
-	params.append('limit', 100)
+	params = new URLSearchParams({
+		'limit' : 100,
+		'time_range' : 'long_term'
+	})
 
 	fetch(base_url + params.toString(), {
 		headers : {
@@ -298,8 +303,11 @@ function average_metrics() {
 
 	// Get top tracks
 	tracks_base_url = 'https://api.spotify.com/v1/me/top/tracks?'
-	tracks_params = new URLSearchParams()
-	tracks_params.append('limit', 100)
+	tracks_params = new URLSearchParams({
+		'limit' : 100,
+		'time_range' : 'long_term'
+	})
+
 	fetch(tracks_base_url + tracks_params.toString(), {
 		headers : {
 			'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
