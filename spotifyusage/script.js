@@ -59,8 +59,10 @@ function onload_housekeeping() {
 	if (typeof(Storage) == "undefined") {
 		alert('Uh oh... You need local storage for this app to work. Try a different browser')
 	} else {
-		if (localStorage.getItem('access_token') != null) {
+		if (localStorage.getItem('time_of_death') != null && localStorage.getItem('time_of_death') > Date.now()) { 
 			logged_in()
+		} else if (localStorage.getItem('access_token') != null) {
+			refresh_token()
 		} else {
 			// add if access token already present and time still left
 			const state = localStorage.getItem('state')
@@ -85,7 +87,6 @@ function onload_housekeeping() {
 }
 
 function exchange_code_for_token(code, code_verifier) {
-	console.log('new code verifier: ' + code_verifier)
 	let formBody = new URLSearchParams({
 		"client_id" : 'e58046da881d41baa038e46fdf037854',
 		"grant_type" : 'authorization_code',
@@ -94,7 +95,7 @@ function exchange_code_for_token(code, code_verifier) {
 		'code_verifier' : code_verifier
 	})
 
-	obj = fetch(
+	fetch(
 		'https://accounts.spotify.com/api/token',
 		{
 			method: 'POST',
@@ -113,6 +114,40 @@ function exchange_code_for_token(code, code_verifier) {
 	}).then(data => {
 		localStorage.setItem('access_token', data['access_token'])
 		localStorage.setItem('refresh_token', data['refresh_token'])
+		localStorage.setItem('time_of_death', data['expires_in'] * 1000 + Date.now())
+		logged_in()
+	}).catch(err => {
+		console.log(err)
+	})
+}
+
+function refresh_token() {
+	let formBody = new URLSearchParams({
+		"client_id" : 'e58046da881d41baa038e46fdf037854',
+		"grant_type" : 'refresh_token',
+		'refresh_token' : localStorage.getItem('refresh_token')
+	})
+
+	fetch(
+		'https://accounts.spotify.com/api/token',
+		{
+			method: 'POST',
+			body: formBody,
+			headers: {
+				'Content-Type' : 'application/x-www-form-urlencoded',
+				'Accept' :	'application/json'
+			}
+		}
+	).then(res => {
+		if (!res.ok) {
+			alert('Something went wrong in authenticating...')
+			throw new Error(res.status);
+		}
+		return res.json()
+	}).then(data => {
+		localStorage.setItem('access_token', data['access_token'])
+		localStorage.setItem('refresh_token', data['refresh_token'])
+		localStorage.setItem('time_of_death', data['expires_in'] * 1000 + Date.now())
 		logged_in()
 	}).catch(err => {
 		console.log(err)
@@ -120,7 +155,13 @@ function exchange_code_for_token(code, code_verifier) {
 }
 
 // Data functions
+function clear() {
+	document.getElementById('myChart').style.display = 'none';
+	document.getElementById('data_table').style.display = 'none';
+}
+
 function top_artists() {
+	clear()
 	base_url = 'https://api.spotify.com/v1/me/top/artists?'
 	params = new URLSearchParams()
 	params.append('limit', 100)
@@ -183,10 +224,12 @@ function top_artists() {
 		}
 
 		table.appendChild(table_body)
+		table.style.display = 'table';
 	})
 }
 
 function top_tracks() {
+	clear()
 	base_url = 'https://api.spotify.com/v1/me/top/tracks?'
 	params = new URLSearchParams()
 	params.append('limit', 100)
@@ -245,11 +288,83 @@ function top_tracks() {
 		}
 
 		table.appendChild(table_body)
+		table.style.display = 'table';
 	})
 }
 
 function average_metrics() {
+	clear()
 
+	// Get top tracks
+	tracks_base_url = 'https://api.spotify.com/v1/me/top/tracks?'
+	tracks_params = new URLSearchParams()
+	tracks_params.append('limit', 100)
+	fetch(tracks_base_url + tracks_params.toString(), {
+		headers : {
+			'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
+		}
+	})
+	.then(res => res.json())
+	.then(data => {
+		ids = data.items.map(t => t.id)
+		metrics_base_url = 'https://api.spotify.com/v1/audio-features?'
+		metrics_params = new URLSearchParams()
+		metrics_params.append('ids', ids.join(','))
+		fetch(metrics_base_url + metrics_params.toString(), {
+			headers : {
+				'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
+			}
+		})
+		.then(res => res.json())
+		.then(data => {
+			let avg = (arr) => arr.reduce((a, b) => a + b) / arr.length
+			// let acoustic_score = avg([for (f in data.audio_features) f.acousticness])			
+			let dance_score = avg(data.audio_features.map(f => f.danceability))
+			let dancy = dance_score >= 0.5 ? dance_score : 0
+			let chill = dance_score < 0.5 ? dance_score : 0
+
+			let energy_score = avg(data.audio_features.map(f => f.energy))
+			let hype = dance_score >= 0.5 ? dance_score : 0
+			let calm = dance_score < 0.5 ? dance_score : 0
+
+			let instru_score = avg(data.audio_features.map(f => f.instrumentalness))
+			let instrumental = dance_score >= 0.5 ? dance_score : 0
+			let spoken = dance_score < 0.5 ? dance_score : 0
+
+			let valence_score = avg(data.audio_features.map(f => f.valence))
+			let bubbly = dance_score >= 0.5 ? dance_score : 0
+			let emo = dance_score < 0.5 ? dance_score : 0
+
+			let chart_data = {
+				'labels': ['Dance', 'Hype', 'Instrumental', 'Bubbly', 'Chill', 'Calm', 'Spoken', 'Emo'],
+				'datasets': [{
+					'label' : 'Your Average Music Metrics',
+					'backgroundColor' : 'rgba(29,185,84,0.3)',
+					'data': [dancy, hype, instrumental, bubbly, chill, calm, spoken, emo]
+				}]
+			}
+
+			let options = {
+				'scale' : {
+					'angleLines' : {
+						'display': true
+					},
+					'ticks': {
+						'suggestedMin': 0,
+						'suggestedMax': 1
+					}
+				}
+			};
+
+			let ctx = document.getElementById('myChart');
+			let myChart = new Chart(ctx, {
+				type: 'radar',
+				data: chart_data,
+				options: options
+			});
+			ctx.style.display = 'block'
+		})
+	})
 }
 
 function recommendations() {

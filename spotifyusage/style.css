@@ -79,3 +79,9 @@ td, th {
 	/*color: white;
 	text-shadow: 0.75px 0 0 #000, 0 -0.75px 0 #000, 0 0.75px 0 #000, -0.75px 0 0 #000;*/
 }
+
+#myChart {
+	max-width: 50%;
+	max-height: 50%;
+	margin: auto;
+}
