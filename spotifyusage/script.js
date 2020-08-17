@@ -176,7 +176,7 @@ function top_artists() {
 		let table = document.getElementById('data_table')
 		table.innerHTML = ''
 
-		cols = ['Rank', 'Name', 'Genres']
+		cols = ['Rank', 'Name', 'Genres', 'Popularity']
 
 		let table_head = document.createElement('thead')
 		let table_head_row = document.createElement('tr')
@@ -212,9 +212,10 @@ function top_artists() {
 			genres_elem.innerHTML = items[i]['genres'].join(', ')
 			row.appendChild(genres_elem)
 
-			// let pop_elem = document.createElement('td')
-			// pop_elem.innerHTML = items[i]['genres'].join(', ')
-			// row.appendChild(genres_elem)
+			let pop_elem = document.createElement('td')
+			let ps = items[i]['popularity']
+			pop_elem.innerHTML = ps < 25 ? 'Super Underground' : (ps < 50 ? 'Underground' : (ps < 75 ? 'Popular' : 'Super Popular'))
+			row.appendChild(pop_elem)
 
 			row.onclick = gen_on_click(items[i]['uri'])
 
