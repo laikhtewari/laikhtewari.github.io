@@ -1,5 +1,6 @@
 // const redirect_uri = 'http://localhost/spotify/'
 const redirect_uri = 'https://laikhtewari.com/spotifyusage/'
+const time_range_str = 'short_term'
 
 // PKCE Functions
 function gen_code_verifier(length) {
@@ -166,7 +167,7 @@ function top_artists() {
 	base_url = 'https://api.spotify.com/v1/me/top/artists?'
 	params = new URLSearchParams({
 		'limit' : 100,
-		'time_range' : 'long_term'
+		'time_range' : time_range_str
 	})
 
 	fetch(base_url + params.toString(), {
@@ -237,7 +238,7 @@ function top_tracks() {
 	base_url = 'https://api.spotify.com/v1/me/top/tracks?'
 	params = new URLSearchParams({
 		'limit' : 100,
-		'time_range' : 'long_term'
+		'time_range' : time_range_str
 	})
 
 	fetch(base_url + params.toString(), {
@@ -305,7 +306,7 @@ function average_metrics() {
 	tracks_base_url = 'https://api.spotify.com/v1/me/top/tracks?'
 	tracks_params = new URLSearchParams({
 		'limit' : 100,
-		'time_range' : 'long_term'
+		'time_range' : time_range_str
 	})
 
 	fetch(tracks_base_url + tracks_params.toString(), {
