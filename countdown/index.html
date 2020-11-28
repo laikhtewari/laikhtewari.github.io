@@ -1,0 +1,80 @@
+<body>
+  <center>
+    <font size="10" color="white">
+      <p id="demo" style="color:black"></p>
+      <div style="text-align:center">
+        <canvas id="myCanvas" width="800" height="200"></canvas>
+      </div>
+    </font>
+  </center>
+  <script> 
+   var countDownDate = new Date("January 4, 2021 12:00:00").getTime();
+   // var countDownDate = new Date("November 26, 2020 12:00:00").getTime();
+
+   var x = setInterval(function() {
+    var now = new Date().getTime();
+    var distance = countDownDate - now;
+    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+     var str = days + " Day";
+     if (days != 1)
+     {
+       str += "s";
+     }
+     str += " " + hours + " Hour";
+     if (hours != 1)
+     {
+       str += "s";
+     }
+     str += " " + minutes + " Minute";
+     if (minutes != 1)
+     {
+       str += "s";
+     }
+     str += " " + seconds + " Second";
+     if (seconds != 1)
+     {
+       str += "s";
+     }
+     
+     document.getElementById("demo").innerHTML = str;
+
+   if (distance < 0) {
+        clearInterval(x);
+      document.getElementById("demo").innerHTML = "😊";
+    }
+   
+   var canvas = document.getElementById("myCanvas");
+   var ctx = canvas.getContext("2d");
+    ctx.strokeRect(150, 75, 500, 30);
+    var startDate = (new Date("November 23, 2020 20:30:00").getTime()) / 1000;
+    var countDown = countDownDate / 1000;
+    var today = now/1000;
+    var bar = Math.abs((today - startDate)/(countDown - startDate) * 500);
+
+    var cqlict = "rgb(255, 56, 0)"
+    ctx.fillStyle = cqlict;
+    ctx.fillRect(150, 75, bar, 30);
+     
+     
+    ctx.fillStyle = "rgb(255, 255, 255)";
+    ctx.fillRect(340, 20, 130, 35);
+    ctx.fillRect(290, 120, 275, 35);
+     
+    ctx.fillStyle = cqlict;
+     
+     var percent = (Math.floor((today - startDate)/(countDown - startDate) * 100000)) / 1000;
+     var percentStr = percent + "%";
+     ctx.font = "30px Arial";
+     ctx.fillText(percentStr, 350,50);
+     
+     var repeat = (Math.floor((100 / percent) * 1000)) / 1000;
+     var repeatStr = repeat + " more times";
+     ctx.fillText(repeatStr, 300, 150);
+     
+  }, 1000);  
+  </script>
+
+</body>
