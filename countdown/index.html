@@ -70,7 +70,7 @@
      ctx.font = "30px Arial";
      ctx.fillText(percentStr, 350,50);
      
-     var repeat = (Math.floor((100 / percent) * 1000)) / 1000;
+     var repeat = (Math.floor((100 / percent - 1) * 1000)) / 1000;
      var repeatStr = repeat + " more times";
      ctx.fillText(repeatStr, 300, 150);
      
