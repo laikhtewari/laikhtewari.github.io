@@ -8,7 +8,7 @@
     </font>
   </center>
   <script> 
-   var countDownDate = new Date("March 4, 2021 20:00:00").getTime();
+   var countDownDate = new Date("March 9, 2021 09:00:00").getTime();
    // var countDownDate = new Date("November 26, 2020 12:00:00").getTime();
 
    var x = setInterval(function() {
@@ -52,7 +52,7 @@
     var startDate = (new Date("February 24, 2021 10:30:00").getTime()) / 1000;
     var countDown = countDownDate / 1000;
     var today = now/1000;
-    var bar = Math.abs((today - startDate)/(countDown - startDate) * 500);
+    var bar = Math.abs(min((today - startDate)/(countDown - startDate),1) * 500);
 
     var cqlict = "rgb(255, 56, 0)"
     ctx.fillStyle = cqlict;
@@ -65,7 +65,7 @@
      
     ctx.fillStyle = cqlict;
      
-     var percent = (Math.floor((today - startDate)/(countDown - startDate) * 100000)) / 1000;
+     var percent = (Math.floor(min((today - startDate)/(countDown - startDate),1) * 100000)) / 1000;
      var percentStr = percent + "%";
      ctx.font = "30px Arial";
      ctx.fillText(percentStr, 350,50);
