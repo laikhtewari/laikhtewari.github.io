@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>EDT</title>
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
+	<body>
+		<h1>Restaurant Ratings</h1>
+
+		<h2>Submit new rating</h2>
+		<div id='outer_form'>
+			<form onsubmit="write_data()">
+				<input type="text" placeholder="Name" id="name">
+				<input type="text" placeholder="City" id="city">
+				<input type="text" placeholder="Ambiance" id="ambiance">
+				<input type="text" placeholder="Presentation" id="presentation">
+				<input type="text" placeholder="Taste" id="taste">
+				<input type="text" placeholder="Service" id="service">
+				<input type="text" placeholder="Emoji" id="emoji">
+				<input type="submit">
+			</form>
+		</div>
+		
+		<h2>View Ratings</h2>
+		<table id='data_table'></table>
+
+
+  		<script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-database.js"></script>
+		<script src='script.js'></script>
+	</body>
+</html>
