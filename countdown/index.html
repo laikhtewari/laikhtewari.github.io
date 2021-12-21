@@ -53,7 +53,7 @@
     var startDate = (new Date("December 12, 2021 02:00:00").getTime()) / 1000;
     var countDown = countDownDate / 1000;
     var today = now/1000;
-    var bar = Math.abs(min((today - startDate)/(countDown - startDate),1) * 500);
+    var bar = Math.abs(Math.min((today - startDate)/(countDown - startDate),1) * 500);
 
     var cqlict = "rgb(255, 56, 0)"
     ctx.fillStyle = cqlict;
@@ -66,7 +66,7 @@
      
     ctx.fillStyle = cqlict;
      
-     var percent = (Math.floor(min((today - startDate)/(countDown - startDate),1) * 100000)) / 1000;
+     var percent = (Math.floor(Math.min((today - startDate)/(countDown - startDate),1) * 100000)) / 1000;
      var percentStr = percent + "%";
      ctx.font = "30px Arial";
      ctx.fillText(percentStr, 350,50);
